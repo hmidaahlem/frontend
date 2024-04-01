@@ -2,10 +2,11 @@ import { Routes } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
-import { RegistreAdminComponent } from './registre-admin/registre-admin.component';
 import { CompteAdminModule } from './compte-admin/compte-admin.module';
 import { ListeAdminComponent } from './compte-admin/liste-admin/liste-admin.component';
 import { CompteAdminRoutingModule } from './compte-admin/compte-admin.routing';
+import { ComptePartcipantRoutingModule } from './compte-participant/compte-partcipant.routing';
+import { LoginComponent } from './login/login.component';
 export const AppRoutes: Routes = [{
         path: '',
         redirectTo: 'dashboard',
@@ -49,6 +50,9 @@ export const AppRoutes: Routes = [{
         }, {
             path: 'compte-admin', // Chemin pour accéder au module du compte administrateur
             loadChildren: () => CompteAdminRoutingModule, // Utilisez le module de routage du compte admin
+          }, {
+            path: 'compte-participant', // Chemin pour accéder au module du compte administrateur
+            loadChildren: () => ComptePartcipantRoutingModule, // Utilisez le module de routage du compte admin
           },]
         },{
             path: '',
@@ -59,8 +63,8 @@ export const AppRoutes: Routes = [{
             }]
         },
         {
-            path: 'registre', // Chemin pour accéder au composant d'enregistrement
-            component: RegistreAdminComponent, // Composant d'enregistrement
+            path: 'login', // Chemin pour accéder au composant d'enregistrement
+            component: LoginComponent, // Composant d'enregistrement
         }
         
 ];

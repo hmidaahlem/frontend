@@ -29,6 +29,10 @@ export const ROUTES: RouteInfo[] = [{
      title: 'compte-admin',
       type: 'link', 
       icontype: 'nc-icon nc-single-02' },
+      { path: '/compte-participant',
+      title: 'compte-participant',
+       type: 'link', 
+       icontype: 'nc-icon nc-single-02' },
     {
         path: '/components',
         title: 'Components',

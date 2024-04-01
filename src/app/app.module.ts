@@ -11,7 +11,7 @@ import { NavbarModule} from './shared/navbar/navbar.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
-import { RegistreAdminComponent } from './registre-admin/registre-admin.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     imports:[
@@ -30,7 +30,7 @@ import { RegistreAdminComponent } from './registre-admin/registre-admin.componen
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
-        RegistreAdminComponent,
+        LoginComponent,
     ],
     bootstrap:    [ AppComponent ]
 })
