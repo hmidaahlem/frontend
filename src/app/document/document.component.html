@@ -1,0 +1,13 @@
+<div>
+    <!-- Liste des documents -->
+    <ul>
+      <li *ngFor="let document of documents" (click)="importDocument(document.id)">
+ 
+      </li>
+    </ul>
+  
+    <!-- Boutons d'export -->
+    <button *ngFor="let document of documents" (click)="exportDocument(document.id)">Export</button>
+    <button *ngFor="let document of documents" (click)="exportWithSign(document.id)">Export with Sign</button>
+  </div>
+  

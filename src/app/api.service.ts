@@ -79,23 +79,29 @@ export class ApiService {
     return this.http.post<any>(`${this.apiUrl}/reunions/invite-users`, inviteData);
   }
 
-  // Documents
-  importDocument(documentData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/documents/import`, documentData);
-  }
+ // Importer un document
+ importDocument(documentData: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/documents/import`, documentData);
+}
 
-  exportDocument(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/documents/${id}/export`);
-  }
+// Exporter un document
+exportDocument(documentId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/documents/${documentId}/export`);
+}
 
-  signDocument(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/documents/${id}/sign`);
-  }
-
-  downloadSignedDocument(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/documents/${id}/download`);
-  }
-
+// Signer un document
+signDocument(documentId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/documents/${documentId}/sign`);
+}
+downloadSignedDocument(documentId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/documents/${documentId}/download`);
+}
+getDocuments(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/documents`);
+}
+exportWithSign(documentId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/documents/${documentId}/exportWithSign`);
+}
   // Decisions
   getDecisions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/decisions`);

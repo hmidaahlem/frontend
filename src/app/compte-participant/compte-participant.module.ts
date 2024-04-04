@@ -10,6 +10,8 @@ import { TagInputModule } from 'ngx-chips';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { UserService } from 'app/API_service/user.service';
+import { AppComponent } from 'app/app.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     TagInputModule,
     NgbModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+  ],
+  providers: [UserService], 
+  bootstrap: [AppComponent]
 })
 export class CompteParticipantModule { }

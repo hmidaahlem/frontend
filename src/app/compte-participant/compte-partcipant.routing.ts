@@ -10,7 +10,7 @@ const comptePartcipantRoutes: Routes = [
     component: ListeParticipantComponent, // Redirection vers la liste des administrateurs
   },
   {
-    path: 'modif',
+    path: 'modif/:id',
     component: ModifPartcipantComponent,
   },
   {

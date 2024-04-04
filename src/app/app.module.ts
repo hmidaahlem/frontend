@@ -12,11 +12,13 @@ import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
 import { AppRoutes } from './app.routing';
 import { LoginComponent } from './login/login.component';
-
+import { DocumentComponent } from './document/document.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CompteParticipantModule } from './compte-participant/compte-participant.module';
 @NgModule({
-    imports:[
-        BrowserAnimationsModule,
-        FormsModule,
+     imports:[
+        BrowserAnimationsModule,CompteParticipantModule,
+        FormsModule,HttpClientModule,
         RouterModule.forRoot(AppRoutes,{
           useHash: true
         }),
@@ -24,13 +26,14 @@ import { LoginComponent } from './login/login.component';
         SidebarModule,
         NavbarModule,
         FooterModule,
-        FixedPluginModule
+        FixedPluginModule,
     ],
     declarations: [
         AppComponent,
         AdminLayoutComponent,
         AuthLayoutComponent,
         LoginComponent,
+        DocumentComponent,
     ],
     bootstrap:    [ AppComponent ]
 })

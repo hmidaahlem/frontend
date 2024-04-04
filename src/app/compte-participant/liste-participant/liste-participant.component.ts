@@ -2,6 +2,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { UserService } from 'app/API_service/user.service';
+import { User } from 'app/models/user';
 
 declare var $:any;
 
@@ -12,6 +14,8 @@ declare interface DataTable {
 }
 
 
+
+
 @Component({
   selector: 'app-liste-participant',
   templateUrl: './liste-participant.component.html',
@@ -19,37 +23,26 @@ declare interface DataTable {
 })
 
 export class  ListeParticipantComponent implements OnInit{
-    public dataTable: DataTable;
-    ngOnInit(){
-      this.dataTable = {
-          headerRow: ['Nom', 'Prénom', 'Email', 'Société', 'Adresse de la société', 'Subdomaine de la société', 'Actions'],
-          footerRow: ['Nom', 'Prénom', 'Email', 'Société', 'Adresse de la société', 'Subdomaine de la société', 'Actions'],
-          dataRows: [
-              ['John', 'Doe', 'john.doe@example.com', 'ABC Company', '123 Main Street', 'abc-company', ''],
-              ['Jane', 'Smith', 'jane.smith@example.com', 'XYZ Corporation', '456 Elm Avenue', 'xyz-corp', ''],
-              ['Alice', 'Johnson', 'alice.johnson@example.com', '123 Industries', '789 Oak Street', '123-industries', ''],
-              ['Bob', 'Brown', 'bob.brown@example.com', 'Tech Solutions Ltd', '321 Pine Road', 'tech-solutions', ''],
-              ['Emma', 'Taylor', 'emma.taylor@example.com', 'Global Enterprises', '567 Maple Lane', 'global-enterprises', ''],
-              ['Michael', 'Williams', 'michael.williams@example.com', 'ACME Corp', '101 Broad Street', 'acme-corp', ''],
-              ['Sarah', 'Jones', 'sarah.jones@example.com', 'Tech Innovations Inc', '246 High Street', 'tech-innovations', ''],
-              ['David', 'Martinez', 'david.martinez@example.com', 'Red Rock Industries', '555 Sunset Boulevard', 'red-rock', ''],
-              ['Jennifer', 'Miller', 'jennifer.miller@example.com', 'Blue Ocean Corporation', '888 Ocean Avenue', 'blue-ocean', ''],
-              ['Matthew', 'Brown', 'matthew.brown@example.com', 'Sunset Solutions', '999 Sunrise Avenue', 'sunset-solutions', ''],
-              ['Jessica', 'Wilson', 'jessica.wilson@example.com', 'Silver Star Enterprises', '333 Starlight Street', 'silver-star', ''],
-              ['William', 'Garcia', 'william.garcia@example.com', 'Golden Gate Group', '444 Golden Gate Avenue', 'golden-gate', ''],
-              ['Megan', 'Rodriguez', 'megan.rodriguez@example.com', 'Polaris Partners', '777 Polaris Parkway', 'polaris-partners', ''],
-              ['James', 'Lopez', 'james.lopez@example.com', 'Evergreen Enterprises', '222 Evergreen Terrace', 'evergreen', ''],
-              ['Ashley', 'Gonzalez', 'ashley.gonzalez@example.com', 'Silver Lining Solutions', '555 Silver Street', 'silver-lining', ''],
-              ['Christopher', 'Hernandez', 'christopher.hernandez@example.com', 'Blue Ridge Corporation', '101 Blue Ridge Drive', 'blue-ridge', ''],
-              ['Amanda', 'Martinez', 'amanda.martinez@example.com', 'Green Leaf Group', '777 Green Leaf Lane', 'green-leaf', ''],
-              ['Daniel', 'Perez', 'daniel.perez@example.com', 'Sunflower Systems', '333 Sunflower Street', 'sunflower', ''],
-              ['Lauren', 'Sanchez', 'lauren.sanchez@example.com', 'Golden Key Inc', '888 Golden Key Boulevard', 'golden-key', ''],
-              ['Nicholas', 'Rivera', 'nicholas.rivera@example.com', 'Bright Future Enterprises', '555 Bright Future Road', 'bright-future', '']
-              // Ajoutez d'autres lignes selon vos besoins
-          ]
-       };
+  users!: User[];
+
+  constructor(private userService: UserService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.loadUsers();
   }
-  
+
+  loadUsers(): void {
+    this.userService.getUsers().subscribe(
+      (response: any) => {
+        this.users = response.users;
+        console.log(response);
+      },
+      (error) => {
+        console.error('Error loading users:', error);
+      }
+    );
+  }
+
   ngAfterViewInit() {
     $('#datatable').DataTable({
       "pagingType": "full_numbers",
@@ -63,18 +56,16 @@ export class  ListeParticipantComponent implements OnInit{
         searchPlaceholder: "Search records",
       }
     });
-  
+
     var table = $('#datatable').DataTable();
 
-    table.on('click', '.edit', function() {
+    table.on('click', '.edit', function () {
       let $tr = $(this).closest('tr');
       var data = table.row($tr).data();
       window.location.href = '/compte-participant/modif/' + data['id'];
     });
-    
-  
-    // Utiliser une fonction fléchée pour conserver le contexte de "this"
-    table.on('click', '.remove', function(e) {
+
+    table.on('click', '.remove', function (e) {
       let $tr = $(this).closest('tr');
       var data = table.row($tr).data();
       window.location.href = '/compte-participant/supprimer/' + data['id'];
@@ -82,11 +73,21 @@ export class  ListeParticipantComponent implements OnInit{
       e.preventDefault();
     });
   }
-  
-  constructor(private router: Router) {}
-  
+
   ajouterPartcipant() {
     this.router.navigate(['/compte-participant/ajout']);
   }
-  
+  redirectToModif(id: number): void {
+    
+    this.router.navigate(['/compte-participant/modif', id]);
+  }
+  delete(event:any,id:number){
+    if(confirm('sure!')){
+      event.target.innertext="deleting";
+      this.userService.delete(id).subscribe((res:any)=>{
+      this.loadUsers();
+      });
+    
+  }
+}
 }

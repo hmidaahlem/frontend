@@ -1,76 +1,51 @@
-
-
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { PasswordValidation } from './password-validator.component';
-
-declare interface User {
-    text?: string;
-    email?: string; //  must be valid email format
-    password?: string; // required, value must be equal to confirm password.
-    confirmPassword?: string; // required, value must be equal to password.
-    number?: number; // required, value must be equal to password.
-    url?: string;
-    idSource?: string;
-    idDestination?: string;
-  
-    nom?: string;
-    prenom?: string;
-    login?: string;
-    companyid?: number;
-  
-}
+import { UserService } from 'app/API_service/user.service';
+import { Router } from '@angular/router';
+import { User } from 'app/models/user';
 
 @Component({
   selector: 'app-ajout-partcipant',
   templateUrl: './ajout-partcipant.component.html',
   styleUrls: ['./ajout-partcipant.component.css']
 })
-export class AjoutPartcipantComponent{
+export class AjoutPartcipantComponent {
 
-    public register: User;
-    public login: User;
-    public typeValidation: User;
+  nom: string;
+  prenom: string;
+  login: string;
+  password: string;
+  email: string;
+  company_id: number;
+  errors: any = [];
+  isLoading: boolean = false;
 
-    ngOnInit() {
-        this.register = {
-            email: '',
-            password: '',
-            confirmPassword: '',
-            nom: '',
-            prenom: '',
-            login: '',
-            companyid: null,
-           
-        }
-        this.typeValidation = {
-            text: '',
-            email: '',
-            idSource: '',
-            idDestination: '',
-            url: ''
-        }
-    }
+  constructor(private userService: UserService, private router: Router) {}
 
-    save(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    save1(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    save2(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    onSubmit(value: any):void{
-        console.log(value);
-    }
+  saveUser(): void {
+    this.isLoading = true;
+    const userData: User = {
+      nom: this.nom,
+      prenom: this.prenom,
+      login: this.login,
+      password: this.password,
+      email: this.email,
+      company_id: this.company_id,
+      id: 0, 
+      created_at: '', 
+      updated_at: '' 
+    };
+    this.userService.saveUser(userData).subscribe({
+      next: (res: any) => {
+        console.log(res, 'response');
+        this.isLoading = false;
+        // Rediriger vers une autre page après l'enregistrement réussi si nécessaire
+        this.router.navigate(['/compte-participant']);
+      },
+      error: (err: any) => {
+        console.error('Error loading users:', err);
+        this.errors = err.error.errors;
+        this.isLoading = false;
+      }
+    });
+  }  
 }

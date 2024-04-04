@@ -4,74 +4,50 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PasswordValidation } from './password-validator.component';
+import { UserService } from 'app/API_service/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'app/models/user';
 
-declare interface User {
-    text?: string;
-    email?: string; //  must be valid email format
-    password?: string; // required, value must be equal to confirm password.
-    confirmPassword?: string; // required, value must be equal to password.
-    number?: number; // required, value must be equal to password.
-    url?: string;
-    idSource?: string;
-    idDestination?: string;
-  
-    nom?: string;
-    prenom?: string;
-    login?: string;
-    companyid?: number;
-  
-}
 
 @Component({
   selector: 'app-modif-partcipant',
   templateUrl: './modif-partcipant.component.html',
   styleUrls: ['./modif-partcipant.component.css']
 })
-export class ModifPartcipantComponent{
+export class ModifPartcipantComponent implements OnInit{
+   constructor(private route:ActivatedRoute,private userservice:UserService){}
+  user!:User;
+   userid!:any;
+   errors: any= [];
+   isLoading: boolean = false;
+   ngOnInit(): void {
+    this.userid=this.route.snapshot.paramMap.get('id');
+    alert(this.userid);
+    this.userservice.getuser(this.userid).subscribe(res =>{
+      console.log(res);
+      this.user=res.user ;
+    });
+   }
+   update(){
+var inputdata={
+  nom:this.user.nom,
+  prenom:this.user.prenom,
+  login:this.user.login,
+  password:this.user.password,
+  email:this.user.email,
+  companyid:this.user.company_id
 
-    public register: User;
-    public login: User;
-    public typeValidation: User;
-
-    ngOnInit() {
-        this.register = {
-            email: '',
-            password: '',
-            confirmPassword: '',
-            nom: '',
-            prenom: '',
-            login: '',
-            companyid: null,
-           
-        }
-        this.typeValidation = {
-            text: '',
-            email: '',
-            idSource: '',
-            idDestination: '',
-            url: ''
-        }
-    }
-
-    save(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    save1(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    save2(model: User, isValid: boolean) {
-    // call API to save customer
-        if(isValid){
-            console.log(model, isValid);
-        }
-    }
-    onSubmit(value: any):void{
-        console.log(value);
-    }
+}
+this.userservice.update(inputdata,this.userid).subscribe({
+  next : (res:any)=> {
+console.log(res);
+  },
+  
+      error: (err: any) => {
+        console.error('Error loading users:', err);
+        this.errors = err.error.errors;
+        
+      }
+    });
+  } 
 }
